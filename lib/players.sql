@@ -81,6 +81,3 @@ VALUES ('LeBron James', 25.3, 7.9, 7.4, 1.2, 0.9, 'Los Angeles Lakers'),
 ('Evan Fournier', 17.1, 3.4, 3.0, 1.0, 0.2, 'Boston Celtics'),
 ('Kelly Oubre Jr.', 15.4, 1.5, 6.0, 1.0, 0.7, 'Golden State Warriors');
 -- Path: lib/data.sql
-
-SELECT * FROM players
-WHERE name = 'LeBron James';

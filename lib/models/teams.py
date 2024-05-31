@@ -1,6 +1,6 @@
-from models.players import players
+from models.players import Players
 from models.__init__ import CURSOR, CONN
-class teams(players):
+class Teams(Players):
     
     teamlist = []
 
@@ -13,7 +13,7 @@ class teams(players):
         self.rpg = rpg
         self.spg = spg
         self.bpg = bpg
-        teams.teamlist.append(self)
+        Teams.teamlist.append(self)
 
     @property
     def name(self):
@@ -149,15 +149,15 @@ class teams(players):
         print(f"{chosen_name} has been deleted")
 
     def players(self):
-        return [player for player in players.all if player.team == self.name]
+        return [player for player in Players.all if player.team == self.name]
     
     def add_player(self, player):
-        if not isinstance(player, players):
+        if not isinstance(player, Players):
             return print("Invalid input must be a player")
         player.team = self.name
 
 for team in CURSOR.execute('SELECT * FROM teams'):
-    new_team = teams(team[1], team[2], team[3], team[4], team[5], team[6], team[7], team[8])
+    new_team = Teams(team[1], team[2], team[3], team[4], team[5], team[6], team[7], team[8])
 
 
      

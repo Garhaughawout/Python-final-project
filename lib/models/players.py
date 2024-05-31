@@ -1,6 +1,6 @@
 from models.__init__ import CURSOR, CONN
 
-class players():
+class Players():
     
     all = []
     
@@ -13,7 +13,7 @@ class players():
         self.spg = spg
         self.bpg = bpg
         self.team = team
-        players.all.append(self)
+        Players.all.append(self)
 
     @property
     def name(self):
@@ -130,6 +130,6 @@ class players():
 
 
 for row in CURSOR.execute('SELECT * FROM players'):
-    player = players(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[0])
+    player = Players(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[0])
 
 

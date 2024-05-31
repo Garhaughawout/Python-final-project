@@ -1,7 +1,7 @@
 # lib/cli.py
-from models.players import players
-from models.teams import teams
-from helpers import  exit_program,  display_all_teams, display_all_players
+from models.players import Players
+from models.teams import Teams
+from helpers import  exit_program,  display_all_teams, display_all_players, grab_stat_higher_than_players, grab_stat_higher_than_teams
 
 def main():
     while True:
@@ -13,17 +13,20 @@ def main():
             print("2. Create a Team")
             print("3. Display all Teams")
             print("4. Grab all players from a team")
-            print("5. Exit")
+            print("5. Grab all teams with a stat higher than a value")
+            print("6. Exit")
             new_choice = input(">")
             if new_choice == "1":
-                teams.find_by_name()
+                Teams.find_by_name()
             elif new_choice == "2":
-                teams.create()
+                Teams.create()
             elif new_choice == "3": 
                 display_all_teams()
             elif new_choice == "4":
-                teams.grab_Players_By_Team()
+                Teams.grab_Players_By_Team()
             elif new_choice == "5":
+                grab_stat_higher_than_teams()
+            elif new_choice == "6":
                 exit_program()
             else:
                 print("Invalid choice")
@@ -32,24 +35,27 @@ def main():
             print("1. Find a Player by Name")
             print("2. Create a Player")
             print("3. Display all Players")
-            print("4. Exit")
+            print("4. Grab all players with a stat higher than a value")
+            print("5. Exit")
             new_choice = input(">")
             if new_choice == "1":
-                players.find_by_player_name()
+                Players.find_by_player_name()
             elif new_choice == "2":
-                players.create()
+                Players.create()
             elif new_choice == "3": 
                 display_all_players()
             elif new_choice == "4":
+                grab_stat_higher_than_players()
+            elif new_choice == "5":
                 exit_program()
             else:
                 print("Invalid choice")
         elif choice == "3":
             player_or_team = input("Would you like to delete a player or team? ")
             if player_or_team == "player":
-                players.deletebyName()
+                Players.deletebyName()
             elif player_or_team == "team":
-                teams.deletebyName()
+                Teams.deletebyName()
             else:
                 print("Invalid choice")
         elif choice == "4":
