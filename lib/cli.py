@@ -13,6 +13,7 @@ def main():
             print("2. Create a Team")
             print("3. Display all Teams")
             print("4. Grab all players from a team")
+            print("5. Exit")
             new_choice = input(">")
             if new_choice == "1":
                 teams.find_by_name()
@@ -22,13 +23,16 @@ def main():
                 display_all_teams()
             elif new_choice == "4":
                 teams.grab_Players_By_Team()
+            elif new_choice == "5":
+                exit_program()
             else:
                 print("Invalid choice")
         elif choice == "2":
             print("Please select an option:")
             print("1. Find a Player by Name")
             print("2. Create a Player")
-            print("3. Delete a Player or Team")
+            print("3. Display all Players")
+            print("4. Exit")
             new_choice = input(">")
             if new_choice == "1":
                 players.find_by_player_name()
@@ -36,6 +40,8 @@ def main():
                 players.create()
             elif new_choice == "3": 
                 display_all_players()
+            elif new_choice == "4":
+                exit_program()
             else:
                 print("Invalid choice")
         elif choice == "3":

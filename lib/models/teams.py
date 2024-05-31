@@ -1,6 +1,7 @@
 from models.players import players
 from models.__init__ import CURSOR, CONN
 class teams(players):
+    
     teamlist = []
 
     def __init__(self, name, wins, losses, ppg, apg, rpg, spg, bpg):
@@ -12,8 +13,8 @@ class teams(players):
         self.rpg = rpg
         self.spg = spg
         self.bpg = bpg
-        teams.add_to_teamlist(self)
-    
+        teams.teamlist.append(self)
+
     @property
     def name(self):
         return self._name
@@ -103,10 +104,6 @@ class teams(players):
             return print("Invalid input must be a float")
 
     @classmethod
-    def add_to_teamlist(cls, self):
-        cls.teamlist.append(self)
-
-    @classmethod
     def find_by_name(cls):
         input_name = input("Enter the name of the team you are looking for: ")
         CURSOR.execute('SELECT * FROM teams WHERE name = ?', (input_name,))
@@ -118,20 +115,22 @@ class teams(players):
     
     def save(self):
         CURSOR.execute(
-            """INSERT INTO teams (name, wins, losses PointsPerGame, AssistsPerGame, ReboundsPerGame, StealsPerGame, BlocksPerGame) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?), (self.name, self.wins, self.losses, self.ppg, self.apg, self.rpg, self.spg, self.bpg)""")
+            """INSERT INTO teams (name, wins, losses,
+            PointsPerGame, AssistsPerGame, ReboundsPerGame, StealsPerGame, BlocksPerGame)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", (self.name, self.wins, self.losses, self.ppg, self.apg, self.rpg, self.spg, self.bpg))
         CONN.commit()
+        print(f"The {self.name} have been created")
 
     @classmethod
-    def create(cls, name, wins, losses, ppg, apg, rpg, spg, bpg):
+    def create(cls):
         new_name = input("Enter the team's name: ")
-        new_wins = input("Enter the team's wins: ")
-        new_losses = input("Enter the team's losses: ")
-        new_ppg = input("Enter the team's points per game: ")
-        new_apg = input("Enter the team's assists per game: ")
-        new_rpg = input("Enter the team's rebounds per game: ")
-        new_spg = input("Enter the team's steals per game: ")
-        new_bpg = input("Enter the team's blocks per game: ")
+        new_wins = int(input("Enter the team's wins: "))
+        new_losses = int(input("Enter the team's losses: "))
+        new_ppg = float(input("Enter the team's points per game: "))
+        new_apg = float(input("Enter the team's assists per game: "))
+        new_rpg = float(input("Enter the team's rebounds per game: "))
+        new_spg = float(input("Enter the team's steals per game: "))
+        new_bpg = float(input("Enter the team's blocks per game: "))
         new_team = cls(new_name, new_wins, new_losses, new_ppg, new_apg, new_rpg, new_spg, new_bpg)
         new_team.save()
 
@@ -148,6 +147,14 @@ class teams(players):
         CURSOR.execute('DELETE FROM teams WHERE name = ?', (chosen_name,))
         CONN.commit()
         print(f"{chosen_name} has been deleted")
+
+    def players(self):
+        return [player for player in players.all if player.team == self.name]
+    
+    def add_player(self, player):
+        if not isinstance(player, players):
+            return print("Invalid input must be a player")
+        player.team = self.name
 
 for team in CURSOR.execute('SELECT * FROM teams'):
     new_team = teams(team[1], team[2], team[3], team[4], team[5], team[6], team[7], team[8])

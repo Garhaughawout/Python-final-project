@@ -1,7 +1,8 @@
 from models.__init__ import CURSOR, CONN
 
 class players():
-    playerlist = []
+    
+    all = []
     
     def __init__(self, name, ppg, apg, rpg, spg, bpg, team, id=None):
         self.id = id
@@ -12,7 +13,7 @@ class players():
         self.spg = spg
         self.bpg = bpg
         self.team = team
-        players.add_to_players(self)
+        players.all.append(self)
 
     @property
     def name(self):
@@ -91,24 +92,22 @@ class players():
         else:
             return print("Invalid input must be a string")
 
-    @classmethod
-    def add_to_players (cls, self):
-        cls.playerlist.append(self)
 
     def save(self):
         CURSOR.execute(
             """INSERT INTO players (name, PointsPerGame, AssistsPerGame, ReboundsPerGame, StealsPerGame, BlocksPerGame, Team) 
-            VALUES (?, ?, ?, ?, ?, ?, ?), (self.name, self.ppg, self.apg, self.rpg, self.spg, self.bpg, self.team))""")
+            VALUES (?, ?, ?, ?, ?, ?, ?)""", (self.name, self.ppg, self.apg, self.rpg, self.spg, self.bpg, self.team))
         CONN.commit()
+        print(f"{self.name} have been created")
 
     @classmethod
     def create(cls):
         new_name = input("Enter the player's name: ")
-        new_ppg = input("Enter the player's points per game: ")
-        new_apg = input("Enter the player's assists per game: ")
-        new_rpg = input("Enter the player's rebounds per game: ")
-        new_spg = input("Enter the player's steals per game: ")
-        new_bpg = input("Enter the player's blocks per game: ")
+        new_ppg = float(input("Enter the player's points per game: "))
+        new_apg = float(input("Enter the player's assists per game: "))
+        new_rpg = float(input("Enter the player's rebounds per game: "))
+        new_spg = float(input("Enter the player's steals per game: "))
+        new_bpg = float(input("Enter the player's blocks per game: "))
         new_team = input("Enter the player's team: ")
         new_player = cls(new_name, new_ppg, new_apg, new_rpg, new_spg, new_bpg, new_team)
         new_player.save()
@@ -128,6 +127,7 @@ class players():
         CURSOR.execute('DELETE FROM players WHERE name = ?', (chosen_name,))
         CONN.commit()
         print(f"{chosen_name} has been deleted")
+
 
 for row in CURSOR.execute('SELECT * FROM players'):
     player = players(row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[0])
